@@ -1,9 +1,11 @@
 const express = require('express');// Importe le module Express, qui est un framework web pour Node.js.
 const morgan = require('morgan');// Importe le module Morgan, un middleware de logging pour enregistrer les requêtes HTTP faites au serveur.
 const path = require('path');// Importe le module 'path', une bibliothèque native de Node.js pour gérer les chemins de fichiers et de répertoires.
+const index = require('./routes');// Importe le fichier `routes.js` situé dans le répertoire courant. Ce fichier devrait contenir les définitions des routes de l'application.
+require('./database'); // recupere la database
+
 const app = express();// Crée une instance de l'application Express. C'est cette instance qui est utilisée pour définir les routes, les middlewares, etc.
 const port = process.env.PORT || 3000;// Définit le port sur lequel le serveur va écouter. Si une variable d'environnement `PORT` est définie, elle est utilisée ; sinon, le port 3000 est choisi par défaut.
-const index = require('./routes');// Importe le fichier `routes.js` situé dans le répertoire courant. Ce fichier devrait contenir les définitions des routes de l'application.
 
 
 app.set('views', path.join(__dirname, 'views'));// Indique à Express où se trouvent les vues (templates). Ici, on spécifie que les templates se trouvent dans le répertoire 'views', qui est dans le répertoire de travail courant (défini par `__dirname`).
