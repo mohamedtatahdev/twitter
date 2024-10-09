@@ -2,6 +2,7 @@ const express = require('express');// Importe le module Express, qui est un fram
 const morgan = require('morgan');// Importe le module Morgan, un middleware de logging pour enregistrer les requêtes HTTP faites au serveur.
 const path = require('path');// Importe le module 'path', une bibliothèque native de Node.js pour gérer les chemins de fichiers et de répertoires.
 const index = require('./routes');// Importe le fichier `routes.js` situé dans le répertoire courant. Ce fichier devrait contenir les définitions des routes de l'application.
+const errorHandler = require('errorhandler');
 require('./database'); // recupere la database
 
 const app = express();// Crée une instance de l'application Express. C'est cette instance qui est utilisée pour définir les routes, les middlewares, etc.
@@ -17,5 +18,16 @@ app.use(express.json());// Middleware pour traiter les requêtes dont le corps e
 app.use(express.urlencoded({ extended: true }));// Middleware pour traiter les requêtes avec des données encodées dans le format URL (formulaires HTML). L'option `extended: true` permet de gérer des objets plus complexes.
 app.use(index);// Utilise les routes définies dans le fichier `routes.js` (ou similaire), ce qui permet de gérer différentes requêtes HTTP selon les routes configurées.
 
+if (process.env.NODE_ENV === 'development') {
+    app.use(errorHandler());
+  } else {
+    app.use((err, req, res, next) => {
+      const code = err.code || 500;
+      res.status(code).json({
+        code: code,
+        message: code === 500 ? null : err.message
+      });
+    })
+  } 
 
 app.listen(port);// Démarre le serveur et lui fait écouter sur le port défini précédemment. Le serveur sera accessible via l'URL http://localhost:3000 (ou sur le port défini dans `process.env.PORT`).
