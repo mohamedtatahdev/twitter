@@ -6,11 +6,17 @@ const errorHandler = require('errorhandler');
 require('./database'); // recupere la database
 
 const app = express();// Crée une instance de l'application Express. C'est cette instance qui est utilisée pour définir les routes, les middlewares, etc.
+exports.app = app;
+
 const port = process.env.PORT || 3000;// Définit le port sur lequel le serveur va écouter. Si une variable d'environnement `PORT` est définie, elle est utilisée ; sinon, le port 3000 est choisi par défaut.
 
 
 app.set('views', path.join(__dirname, 'views'));// Indique à Express où se trouvent les vues (templates). Ici, on spécifie que les templates se trouvent dans le répertoire 'views', qui est dans le répertoire de travail courant (défini par `__dirname`).
 app.set('view engine', 'pug');// Définit le moteur de rendu (view engine) comme étant 'pug'. Cela permet à Express de rendre des fichiers de templates `.pug` comme pages HTML.
+
+require('./config/session.config');
+require('./config/passport.config');
+
 
 app.use(morgan('short'));// Utilise Morgan avec le format 'short' pour enregistrer chaque requête HTTP faite au serveur. Cela affiche dans la console des informations sur les requêtes entrantes (méthode HTTP, URL, temps de réponse, etc.).
 app.use(express.static(path.join(__dirname, 'public')));// Définit un middleware pour servir les fichiers statiques (CSS, JavaScript, images, etc.) à partir du répertoire 'public'. Cela permet aux clients de récupérer ces fichiers directement.

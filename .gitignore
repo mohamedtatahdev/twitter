@@ -1,1 +1,2 @@
-/database/index.js
+/config/.env
+/node_modules
